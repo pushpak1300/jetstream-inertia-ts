@@ -2,9 +2,9 @@
 
 <p align="center">
     <a href="https://github.com/laravel/jetstream/actions"><img src="https://github.com/laravel/jetstream/workflows/tests/badge.svg" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/pushpak/jetstream-inertia-ts"><img src="https://img.shields.io/packagist/dt/pushpak/jetstream-inertia-ts" alt="Total Downloads"></a>
-    <a href="https://packagist.org/packages/pushpak/jetstream-inertia-ts"><img src="https://img.shields.io/packagist/v/pushpak/jetstream-inertia-ts" alt="Latest Stable Version"></a>
-    <a href="https://packagist.org/packages/pushpak/jetstream-inertia-ts"><img src="https://img.shields.io/packagist/l/pushpak/jetstream-inertia-ts" alt="License"></a>
+    <a href="https://packagist.org/packages/pushpak/jetstream-inertia-ts"><img src="https://img.shields.io/packagist/dt/pushpak1300/jetstream-inertia-ts" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/pushpak/jetstream-inertia-ts"><img src="https://img.shields.io/packagist/v/pushpak1300/jetstream-inertia-ts" alt="Latest Stable Version"></a>
+    <a href="https://packagist.org/packages/pushpak/jetstream-inertia-ts"><img src="https://img.shields.io/packagist/l/pushpak1300/jetstream-inertia-ts" alt="License"></a>
 </p>
 
 ## Introduction
