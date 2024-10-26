@@ -21,6 +21,12 @@ This fork adds full TypeScript support for the Inertia version of Laravel Jetstr
 
 This fork is maintained to stay in sync with the official Laravel Jetstream repository. We regularly update our codebase to incorporate the latest changes and improvements from the main Jetstream project, ensuring that you always have access to the most up-to-date features and bug fixes, along with our added TypeScript support for Inertia.
 
+## Setup
+
+```bash
+php artisan jetstream:install inertia --ts
+```
+This package supports all underlying Jetstream options. If you wanto to install TS support just add -ts option. More documentation can be found in the [Jetstream website](https://jetstream.laravel.com/installation.html).
 
 ## Official Documentation
 
