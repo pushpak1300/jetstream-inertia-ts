@@ -36,7 +36,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
                                               {--verification : Indicates if email verification support should be installed}
                                               {--pest : Indicates if Pest should be installed}
                                               {--ssr : Indicates if Inertia SSR support should be installed}
-                                              {--composer=global : Absolute path to the Composer binary which should be used to install packages}';
+                                              {--composer=global : Absolute path to the Composer binary which should be used to install packages}
+                                              {--ts : Indicates if TypeScript support should be installed}';
 
     /**
      * The console command description.
@@ -431,7 +432,6 @@ EOF;
         copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/PrivacyPolicy.vue', resource_path('js/Pages/PrivacyPolicy.vue'));
         copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/TermsOfService.vue', resource_path('js/Pages/TermsOfService.vue'));
         copy(__DIR__.'/../../stubs/inertia/resources/js/Pages/Welcome.vue', resource_path('js/Pages/Welcome.vue'));
-
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Components', resource_path('js/Components'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Layouts', resource_path('js/Layouts'));
         (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/inertia/resources/js/Pages/API', resource_path('js/Pages/API'));
@@ -473,8 +473,14 @@ EOF;
             );
         }
 
+        if ($this->option('ts')) {
+            $this->installTypescript();
+        }
+
         if (file_exists(base_path('pnpm-lock.yaml'))) {
             $this->runCommands(['pnpm install', 'pnpm run build']);
+        } elseif (file_exists(base_path('bun.lockb'))) {
+            $this->runCommands(['bun install', 'bun run build']);
         } elseif (file_exists(base_path('yarn.lock'))) {
             $this->runCommands(['yarn install', 'yarn run build']);
         } else {
@@ -487,6 +493,138 @@ EOF;
         $this->components->info('Inertia scaffolding installed successfully.');
 
         return true;
+    }
+
+    /**
+     * Install the Typescript stack into the application.
+     *
+     * @return void
+     */
+    protected function installTypescript()
+    {
+        // Step 1: Update Node Packages
+        $this->updateNodePackages(function ($packages) {
+            return [
+                '@inertiajs/vue3' => '^2.0.0-beta.2',
+                '@tailwindcss/forms' => '^0.5.7',
+                '@tailwindcss/typography' => '^0.5.10',
+                '@vitejs/plugin-vue' => '^5.1.4',
+                'autoprefixer' => '^10.4.16',
+                'axios' => '^1.7.4',
+                'concurrently' => '^9.0.1',
+                'laravel-vite-plugin' => '^1.0',
+                'postcss' => '^8.4.32',
+                'tailwindcss' => '^3.4.0',
+                'vite' => '^5.0',
+                'vue' => '^3.3.13',
+                '@rushstack/eslint-patch' => '^1.10.4',
+                '@vue/eslint-config-prettier' => '^10.1.0',
+                '@vue/eslint-config-typescript' => '^14.1.3',
+                'eslint' => '^9.13.0',
+                'eslint-plugin-vue' => '^9.29.1',
+                'lucide-vue-next' => '^0.453.0',
+                'prettier' => '^3.3.3',
+                'prettier-plugin-organize-imports' => '^4.1.0',
+                'prettier-plugin-tailwindcss' => '^0.6.8',
+                'typescript' => '^5.6.3',
+                'vue-tsc' => '^2.1.6',
+                'ziggy-js' => '^2.3.1',
+            ];
+        });
+
+        // Step 2: Define Stub Paths and Destination Paths
+        $stubsPath = __DIR__ . '/../../stubs/inertia-ts';
+        $resourcePathJS = resource_path('js');
+        $resourcePathViews = resource_path('views');
+
+        $filesToCopy = [
+            // Configuration files
+            'tailwind.config.ts' => base_path('tailwind.config.ts'),
+            'vite.config.ts' => base_path('vite.config.ts'),
+            '.prettierrc' => base_path('.prettierrc'),
+            '.eslintrc.cjs' => base_path('.eslintrc.cjs'),
+            'tsconfig.json' => base_path('tsconfig.json'),
+
+            // Vue Pages
+            'resources/js/Pages/Dashboard.vue' => "{$resourcePathJS}/Pages/Dashboard.vue",
+            'resources/js/Pages/PrivacyPolicy.vue' => "{$resourcePathJS}/Pages/PrivacyPolicy.vue",
+            'resources/js/Pages/TermsOfService.vue' => "{$resourcePathJS}/Pages/TermsOfService.vue",
+            'resources/js/Pages/Welcome.vue' => "{$resourcePathJS}/Pages/Welcome.vue",
+            'resources/js/app.ts' => "{$resourcePathJS}/app.ts",
+        ];
+
+        // Step 3: Copy Files
+        foreach ($filesToCopy as $stub => $destination) {
+            copy("{$stubsPath}/{$stub}", $destination);
+        }
+
+        // Step 4: Copy Directories
+        $directoriesToCopy = [
+            'resources/js/Components' => "{$resourcePathJS}/Components",
+            'resources/js/Layouts' => "{$resourcePathJS}/Layouts",
+            'resources/js/Pages/API' => "{$resourcePathJS}/Pages/API",
+            'resources/js/Pages/Auth' => "{$resourcePathJS}/Pages/Auth",
+            'resources/js/Pages/Profile' => "{$resourcePathJS}/Pages/Profile",
+            'resources/js/types' => "{$resourcePathJS}/types",
+        ];
+
+        foreach ($directoriesToCopy as $stubDir => $destDir) {
+            (new Filesystem)->copyDirectory("{$stubsPath}/{$stubDir}", $destDir);
+        }
+
+        // Step 5: Remove Existing JavaScript Configurations
+        $filesToRemove = [
+            base_path('jsconfig.json'),
+            base_path('tailwind.config.js'),
+            base_path('vite.config.js'),
+        ];
+
+        foreach ($filesToRemove as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+
+        // Step 6: Replace File Extensions and Update References
+        $this->replaceInFile('.js', '.ts', "{$resourcePathViews}/app.blade.php");
+        $this->replaceInFile('vite build', 'tsc && vite build', base_path('package.json'));
+
+        // Rename bootstrap.js to bootstrap.ts if it exists
+        $bootstrapJs = "{$resourcePathJS}/bootstrap.js";
+        $bootstrapTs = "{$resourcePathJS}/bootstrap.ts";
+        if (file_exists($bootstrapJs)) {
+            rename($bootstrapJs, $bootstrapTs);
+        }
+
+        // Remove app.js if it exists
+        $appJs = "{$resourcePathJS}/app.js";
+        if (file_exists($appJs)) {
+            unlink($appJs);
+        }
+
+        // Step 7: Handle Optional Features
+        if ($this->option('teams')) {
+            (new Filesystem)->copyDirectory("{$stubsPath}/resources/js/Pages/Teams", "{$resourcePathJS}/Pages/Teams");
+        }
+
+        if ($this->option('ssr')) {
+            //remove existing ssr.js if it exists
+            $ssrJs = "{$resourcePathJS}/ssr.js";
+            if (file_exists($ssrJs)) {
+                unlink($ssrJs);
+            }
+
+            // Copy SSR file
+            copy("{$stubsPath}/resources/js/ssr.ts", "{$resourcePathJS}/ssr.ts");
+
+            // Update vite.config.ts for SSR
+            $viteConfigPath = base_path('vite.config.ts');
+            $ssrConfig = PHP_EOL . "            ssr: 'resources/js/ssr.ts',";
+            $this->replaceInFile("input: 'resources/js/app.ts',", "input: 'resources/js/app.ts',{$ssrConfig}", $viteConfigPath);
+
+            // Update package.json for SSR build
+            $this->replaceInFile('vite build', 'tsc && vite build && vite build --ssr', base_path('package.json'));
+        }
     }
 
     /**
