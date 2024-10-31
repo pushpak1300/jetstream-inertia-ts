@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/jetstream/compare/v5.3.0...5.x)
+## [Unreleased](https://github.com/laravel/jetstream/compare/v5.3.1...5.x)
+
+## [v5.3.1](https://github.com/laravel/jetstream/compare/v5.3.0...v5.3.1) - 2024-10-30
+
+* [5.x] Add bun support by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/jetstream/pull/1544
+* [5.x] Add bun support for inertia by [@pushpak1300](https://github.com/pushpak1300) in https://github.com/laravel/jetstream/pull/1545
 
 ## [v5.3.0](https://github.com/laravel/jetstream/compare/v5.2.1...v5.3.0) - 2024-10-12
 
