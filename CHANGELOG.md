@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/jetstream/compare/v5.3.1...5.x)
+## [Unreleased](https://github.com/laravel/jetstream/compare/v5.3.2...5.x)
+
+## [v5.3.2](https://github.com/laravel/jetstream/compare/v5.3.1...v5.3.2) - 2024-11-11
+
+* Fix Text Alignment on Team Member Role Modal Descriptions by [@andyunleashed](https://github.com/andyunleashed) in https://github.com/laravel/jetstream/pull/1546
+* [5.x] Convert array to single line format by [@reyberyturiaga](https://github.com/reyberyturiaga) in https://github.com/laravel/jetstream/pull/1547
 
 ## [v5.3.1](https://github.com/laravel/jetstream/compare/v5.3.0...v5.3.1) - 2024-10-30
 

@@ -196,7 +196,7 @@
                             </div>
 
                             <!-- Role Description -->
-                            <div class="mt-2 text-xs text-gray-600 dark:text-gray-400">
+                            <div class="mt-2 text-xs text-gray-600 text-start dark:text-gray-400">
                                 {{ $role->description }}
                             </div>
                         </div>
