@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2, 8.3]
+        php: [8.2, 8.3, 8.4]
         laravel: [11]
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
@@ -40,7 +40,7 @@ jobs:
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --display-deprecations --fail-on-deprecation
 
   stub-tests:
     runs-on: ubuntu-22.04
@@ -49,7 +49,7 @@ jobs:
       fail-fast: true
       matrix:
         stack: [inertia, livewire]
-        laravel: [11]
+        laravel: ['11.x-dev']
 
     name: Test Stubs - Laravel ${{ matrix.laravel }} - ${{ matrix.stack }}
 

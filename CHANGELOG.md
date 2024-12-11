@@ -1,6 +1,11 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/jetstream/compare/v5.3.3...5.x)
+## [Unreleased](https://github.com/laravel/jetstream/compare/v5.3.4...5.x)
+
+## [v5.3.4](https://github.com/laravel/jetstream/compare/v5.3.3...v5.3.4) - 2024-12-10
+
+* Update Profile Photo Accessor by [@husamAwadhi](https://github.com/husamAwadhi) in https://github.com/laravel/jetstream/pull/1550
+* [5.x] Supports PHP 8.4 by [@crynobone](https://github.com/crynobone) in https://github.com/laravel/jetstream/pull/1548
 
 ## [v5.3.3](https://github.com/laravel/jetstream/compare/v5.3.2...v5.3.3) - 2024-11-13
 
